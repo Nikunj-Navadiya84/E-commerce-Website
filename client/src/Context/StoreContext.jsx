@@ -192,8 +192,10 @@ export const ShopContextProvider = ({ children }) => {
     useEffect(() => {
         if (user) {
             localStorage.setItem("user", JSON.stringify(user));
+            localStorage.setItem("UserId", user.UserId);
         } else {
             localStorage.removeItem("user");
+            localStorage.removeItem("UserId");
         }
     }, [user]);
 
@@ -203,22 +205,45 @@ export const ShopContextProvider = ({ children }) => {
 
 
 
-    // Add to Cart
-    const addToCart = (product, quantity = 1) => {
-        setCart((prevCart) => {
-            const existingItem = prevCart.find((item) => item.id === product.id);
-            if (existingItem) {
-                return prevCart.map((item) =>
-                    item.id === product.id
-                        ? { ...item, quantity: item.quantity + quantity }
-                        : item
-                );
+    const addToCart = async (products, quantity = 1) => {
+        const userId = localStorage.getItem("UserId"); 
+        const token = localStorage.getItem("token");
+    
+        if (!token || !userId) {
+            alert("Please log in to add items to the cart.");
+            return;
+        }
+    
+        try {
+            const response = await fetch("http://localhost:4000/api/cart/add", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    userId, 
+                    productId: products._id, 
+                    quantity,
+                }),
+            });
+    
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message || "Failed to add product to cart");
+    
+            console.log("API Response:", data);
+    
+            if (typeof setCart === "function") {
+                setCart(data.cartData);
             }
-            return [...prevCart, { ...product, quantity }];
-        });
-        setCartOpen(false);
-        setQuantity(1);
+    
+        } catch (error) {
+            console.error("Error adding to cart:", error.message);
+        }
     };
+    
+    
+    
 
 
     // Update Cart Quantity

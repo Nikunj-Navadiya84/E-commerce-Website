@@ -16,7 +16,6 @@ function Categories() {
     const [value, setValue] = useState([1, 1000]);
     const categories = ["Snack & Spices", "Fruits", "Vegetables"];
 
-
     // Fetch Product
     useEffect(() => {
         const fetchProducts = async () => {
