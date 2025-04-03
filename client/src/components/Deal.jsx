@@ -12,7 +12,7 @@ function Deal() {
     const [products, setProducts] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const closeModal = () => setSelectedProduct(null);
-    const { addToCart, handleQuantityChange, quantity, addToList, isLiked } = useContext(StoreContext);
+    const { addToCart, handleQuantityChange, quantity, likedProducts, removeFromWishlist, addToWishlist } = useContext(StoreContext);
 
     // Fetch Product
     useEffect(() => {
@@ -32,7 +32,7 @@ function Deal() {
         };
 
         fetchProducts();
-    }, []); 
+    }, []);
 
 
     useEffect(() => {
@@ -82,10 +82,12 @@ function Deal() {
                                     <p className='text-gray-800 text-sm mb-2'>{product.name}</p>
                                 </div>
                                 <div>
-                                    <button className='cursor-pointer' onClick={() => addToList(product)}>
-                                        {isLiked(product.id) ?
-                                            <FaHeart className='text-xl text-red-500' /> :
-                                            <FaRegHeart className='text-xl text-red-300' />}
+                                    <button className="cursor-pointer" onClick={() => likedProducts[product._id] ? removeFromWishlist(product) : addToWishlist(product)}>
+                                        {likedProducts[product._id] ? (
+                                            <FaHeart className="text-xl text-red-500" />
+                                        ) : (
+                                            <FaRegHeart className="text-xl text-red-300" />
+                                        )}
                                     </button>
                                 </div>
                             </div>
