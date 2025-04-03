@@ -17,8 +17,6 @@ export const ShopContextProvider = ({ children }) => {
     const [likedProducts, setLikedProducts] = useState({});
     const [wishlist, setWishList] = useState([]);
 
-
-
     // Add to Wishlist
     const addToWishlist = async (product) => {
         if (!token) {
