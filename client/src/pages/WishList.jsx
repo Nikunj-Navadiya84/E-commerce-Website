@@ -7,32 +7,10 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import axios from "axios"
 
 function WishList() {
-    const { addToCart, handleQuantityChange, quantity, removeFromWishlist } = useContext(StoreContext);
+    const { addToCart, handleQuantityChange, quantity, removeFromWishlist, wishlist , fetchWishlist} = useContext(StoreContext);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const closeModal = () => setSelectedProduct(null);
-    const [list, setList] = useState([]);
-
-    const fetchWishlist = async () => {
-        try {
-            const token = localStorage.getItem("token");
-
-            if (!token) {
-                console.error("No authentication token found");
-                return;
-            }
-
-            const res = await axios.get("http://localhost:4000/api/wishlist/getwishlist", {
-                headers: { Authorization: `Bearer ${token}` },
-                withCredentials: true
-            });
-
-            if (res.data.success) {
-                setList(res.data.wishlist.products);
-            }
-        } catch (error) {
-            console.error("Error fetching wishlist:", error);
-        }
-    };
+   
 
     const handleRemove = async (product) => {
         await removeFromWishlist(product);  
@@ -74,11 +52,11 @@ function WishList() {
                     </div>
 
                     <div className="text-center items-center justify-between">
-                        {list.length === 0 ? (
+                        {wishlist.length === 0 ? (
                             <p className="text-gray-600 text-center p-5">Your WishList is empty.</p>
                         ) : (
                             <div>
-                                {list.map((item, index) => (
+                                {wishlist.map((item, index) => (
                                     <div
                                         key={index}
                                         className=" flex justify-between items-center border-b border-gray-200 p-2 text-center"

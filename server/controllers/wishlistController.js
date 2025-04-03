@@ -1,5 +1,5 @@
 const Wishlist = require("../models/Wishlist");
-const Product = require("../models/product");   
+const Product = require("../models/product");
 const logger = require("../Logger/logger");
 
 // Add product to wishlist
@@ -32,26 +32,25 @@ exports.addToWishlist = async (req, res) => {
   }
 };
 
+// wish List
 exports.getWishlist = async (req, res) => {
   try {
-      if (!req.user) {
-          return res.status(401).json({ success: false, message: "Unauthorized - User not found" });
-      }
+    if (!req.user) {
+      return res.status(401).json({ success: false, message: "Unauthorized - User not found" });
+    }
 
-      const wishlist = await Wishlist.findOne({ user: req.user._id }).populate("products");
+    const wishlist = await Wishlist.findOne({ user: req.user._id }).populate("products");
 
-      if (!wishlist) {
-          return res.status(404).json({ success: false, message: "Wishlist is empty" });
-      }
+    if (!wishlist) {
+      return res.status(404).json({ success: false, message: "Wishlist is empty" });
+    }
 
-      res.status(200).json({ success: true, wishlist });
+    res.status(200).json({ success: true, wishlist });
   } catch (error) {
-      console.error("Error fetching wishlist:", error);
-      res.status(500).json({ success: false, message: "Internal Server Error" });
+    console.error("Error fetching wishlist:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
-
-
 
 // Remove item from wishlist
 exports.removeFromWishlist = async (req, res) => {
