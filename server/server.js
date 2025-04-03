@@ -9,7 +9,9 @@ const awardsRoutes = require("./routes/awardsRoutes");
 const adminRoutes = require("./routes/adminlogRoutes");
 const UserRoutes = require("./routes/UserRoutes");
 const wishlistRoutes = require("./routes/wishlistRoutes");
+const cartRoutes = require("./routes/cartRoutes");
 const { connectDB } = require("./config/db");
+
 
 const app = express();
 const PORT = 4000;
@@ -47,5 +49,8 @@ app.use("/admin", adminRoutes);
 
 // WishList
 app.use("/api/wishlist", wishlistRoutes);
+
+// Crat List
+app.use('/api/cart', cartRoutes)
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

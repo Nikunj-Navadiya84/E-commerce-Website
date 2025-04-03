@@ -17,6 +17,8 @@ export const ShopContextProvider = ({ children }) => {
     const [likedProducts, setLikedProducts] = useState({});
     const [wishlist, setWishList] = useState([]);
 
+
+
     // Add to Wishlist
     const addToWishlist = async (product) => {
         if (!token) {
@@ -88,8 +90,7 @@ export const ShopContextProvider = ({ children }) => {
 
                 const updatedWishlist = wishlist.filter((item) => item._id !== product._id);
                 setWishList(updatedWishlist);
-                localStorage.setItem("wishlist", JSON.stringify(updatedWishlist)); 
-
+                localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
                 toast.warn("Removed from wishlist");
             }
         } catch (error) {
@@ -149,7 +150,11 @@ export const ShopContextProvider = ({ children }) => {
         return savedWishlist.length;
     };
 
-  
+
+
+
+
+
     // Fetch user data
     const fetchUser = async () => {
         const token = localStorage.getItem("token");
@@ -168,6 +173,7 @@ export const ShopContextProvider = ({ children }) => {
             if (!response.ok) throw new Error("Failed to fetch user");
             const data = await response.json();
             setUser({
+                UserId: data.userId,
                 name: data.LoginUserName || "Unknown User",
                 email: data.email || "No Email",
                 profilePic: data.profilePic || null,
@@ -180,8 +186,7 @@ export const ShopContextProvider = ({ children }) => {
 
     useEffect(() => {
         fetchUser()
-    })
-
+    });
 
     // Keep user data in local storage updated
     useEffect(() => {
@@ -193,23 +198,9 @@ export const ShopContextProvider = ({ children }) => {
     }, [user]);
 
 
-    // Wishlist Product
-    const addToList = (product) => {
-        setList((prevList) => {
-            const existingItem = prevList.find((item) => item.id === product.id);
-            if (existingItem) {
-                return prevList.filter((item) => item.id !== product.id);
-            }
-            return [...prevList, { ...product }];
-        });
-        setListOpen(false);
-    };
 
 
-    // Check if Product is Liked
-    const isLiked = (productId) => {
-        return list.some((item) => item.id === productId);
-    };
+
 
 
     // Add to Cart
@@ -260,10 +251,12 @@ export const ShopContextProvider = ({ children }) => {
     };
 
 
+
+
     const contextValue = {
-        cart, setCart, cartOpen, setCartOpen, addToCart, handleQuantityChange, quantity, updateCartQuantity, getCartCount, addToList, list, setList, listOpen, setListOpen, isLiked, getListCount, getCartAmount,
-        delivery_fee, removeFromWishlist, isLoggedIn, setIsLoggedIn, user, setUser, likedProducts, setLikedProducts, addToWishlist, fetchWishlist, wishlist
+        cart, setCart, cartOpen, setCartOpen, addToCart, handleQuantityChange, quantity, updateCartQuantity, getCartCount, list, setList, listOpen, setListOpen, getListCount, getCartAmount, delivery_fee, removeFromWishlist, isLoggedIn, setIsLoggedIn, user, setUser, likedProducts, setLikedProducts, addToWishlist, fetchWishlist, wishlist
     };
+
 
     return (
         <StoreContext.Provider value={contextValue}>

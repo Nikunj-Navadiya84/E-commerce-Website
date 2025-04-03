@@ -32,12 +32,12 @@ const Cart = () => {
                             <p className="text-gray-600">Your cart is empty.</p>
                         ) : (
                             <div className="space-y-4 max-h-[50vh] overflow-y-auto">
-                                {cart.map((item) => (
-                                    <div key={item.id} className="flex justify-between  border-b border-gray-200 pb-2">
-                                        <img src={item.image} alt={item.name} className="w-12 h-12 rounded" />
+                                {cart.map((item, index) => (
+                                    <div key={index} className="flex justify-between  border-b border-gray-200 pb-2">
+                                        <img src={`http://localhost:4000/${item.images?.[0]}`} alt="" className="w-12 h-12 rounded" />
                                         <div className="flex-1 ml-3">
                                             <h3 className="text-sm text-gray-700 mb-2">{item.name}</h3>
-                                            <p className="text-sm text-gray-700 font-bold mb-2">${(item.price * item.quantity).toFixed(2)}</p>
+                                            <p className="text-sm text-gray-700 font-bold mb-2">${(item.offerPrice * item.quantity).toFixed(2)}</p>
 
                                             <div className="flex justify-between items-center">
                                                 <div className="flex items-center text-gray-700">

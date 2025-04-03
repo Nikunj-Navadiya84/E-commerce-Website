@@ -99,11 +99,12 @@ exports.login = async (req, res) => {
 // Fetch users
 exports.users = async (req, res) => {
   try {
-    await User.find({}, 'name email');
+    const user = await User.findById(req.user.id).select("name email");
 
     return res.status(200).send({
       success: true,
       message: "Users successfully fetched",
+      userId: user._id,
       email: req.user.email,
       LoginUserName: req.user.name
     });
@@ -116,7 +117,7 @@ exports.users = async (req, res) => {
     });
   }
 };
-  
+
 
 // changepassword
 exports.changepassword = async (req, res) => {
