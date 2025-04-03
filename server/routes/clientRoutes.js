@@ -7,7 +7,7 @@ const { AdminMiddleware } = require("../middleware/AdminMiddleware");
 const router = express.Router();
 
 router.post("/add", AdminMiddleware, upload.single("images"), createClient);
-router.get("/list", AdminMiddleware, getClient);
+router.get("/list",  getClient);
 router.put("/update/:id", AdminMiddleware, upload.single("images"), updateClient);
 router.delete("/delete/:id", AdminMiddleware, deleteClient);
 
