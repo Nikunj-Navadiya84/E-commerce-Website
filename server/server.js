@@ -16,20 +16,13 @@ const PORT = 4000;
 
 connectDB();
 
-// // CORS Configuration
-// const corsOptions = {
-//     origin: "http://localhost:5173",
-//     credentials: true, 
-//     methods: ["GET", "POST", "PUT", "DELETE"],
-//     allowedHeaders: ["Content-Type", "Authorization"]
-// };
-
-
-
 // Apply CORS middleware with options
 
-
-app.use(cors());
+app.use(cors({
+    origin: ['http://localhost:5173', 'http://localhost:5174'],
+    methods: 'GET,POST,PUT,DELETE',
+    credentials: true
+}));
 app.use(express.json());
 
 app.use("/uploads", express.static("uploads"));
@@ -47,7 +40,7 @@ app.use("/api/client", clientRoutes);
 app.use("/api/awards", awardsRoutes);
 
 // User Login
-app.use("/api/user", cors(corsOptions) , UserRoutes);
+app.use("/api/user",  UserRoutes);
 
 // Logs
 app.use("/admin", adminRoutes);
