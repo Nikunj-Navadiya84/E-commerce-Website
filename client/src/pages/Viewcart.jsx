@@ -5,15 +5,7 @@ import { Link } from "react-router";
 
 function Viewcart() {
 
-    const { cart, updateCartQuantity, getCartAmount, delivery_fee } = useContext(StoreContext);
-
-    const handleRemove = (id, quantity) => {
-        if (quantity > 1) {
-            updateCartQuantity(id, quantity - 1);
-        } else {
-            updateCartQuantity(id, 0);
-        }
-    };
+    const { cart, updateCartQuantity, getCartAmount, delivery_fee, handleRemove } = useContext(StoreContext);
 
     return (
         <div className='px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw] pt-5'>
@@ -38,14 +30,14 @@ function Viewcart() {
                         <p className="text-gray-600 text-center p-5">Your cart is empty.</p>
                     ) : (
                         <div>
-                            {cart.map((item) => (
+                            {cart.map((item, index) => (
                                 <div
-                                    key={item.id}
+                                    key={index}
                                     className="flex justify-between items-center border-b border-gray-200 p-2 text-center"
                                 >
                                     <div className=" flex justify-center">
                                         <img
-                                            src={item.image}
+                                           src={`http://localhost:4000/${item.images?.[0]}`}
                                             alt={item.name}
                                             className="w-12 h-12 rounded"
                                         />
@@ -62,7 +54,7 @@ function Viewcart() {
                                             <button
                                                 className="cursor-pointer px-2 py-1"
                                                 onClick={() =>
-                                                    item.quantity > 1 && updateCartQuantity(item.id, item.quantity - 1)
+                                                    item.quantity > 1 && updateCartQuantity(item, item.quantity - 1)
                                                 }
                                             >
                                                 -
@@ -70,7 +62,7 @@ function Viewcart() {
                                             <p className="text-sm w-20 text-center">{item.quantity}</p>
                                             <button
                                                 className="cursor-pointer px-2 py-1"
-                                                onClick={() => updateCartQuantity(item.id, item.quantity + 1)}
+                                                onClick={() => updateCartQuantity(item, item.quantity + 1)}
                                             >
                                                 +
                                             </button>
@@ -83,8 +75,7 @@ function Viewcart() {
 
                                     <button
                                         className="text-red-500 text-sm cursor-pointer w-1/6"
-                                        onClick={() => handleRemove(item.id, item.quantity)}
-                                    >
+                                        onClick={() => handleRemove(item)}>
                                         <RiDeleteBin5Line className="text-2xl mx-auto" />
                                     </button>
                                 </div>

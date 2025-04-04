@@ -1,19 +1,12 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import { StoreContext } from "../Context/StoreContext";
 import { CiSquareRemove } from "react-icons/ci";
 import CartTotal from "./CartTotal";
 
 const Cart = () => {
-    const { cart, cartOpen, setCartOpen, updateCartQuantity } = useContext(StoreContext);
+    const { cart, cartOpen, setCartOpen, updateCartQuantity, handleRemove } = useContext(StoreContext);
 
-    const handleRemove = (id, quantity) => {
-        if (quantity > 1) {
-            updateCartQuantity(id, quantity - 1);
-        } else {
-            updateCartQuantity(id, 0);
-        }
-    };
 
     return (
         <>
@@ -32,23 +25,28 @@ const Cart = () => {
                             <p className="text-gray-600">Your cart is empty.</p>
                         ) : (
                             <div className="space-y-4 max-h-[50vh] overflow-y-auto">
-                                {cart.map((item) => (
-                                    <div key={item.id} className="flex justify-between  border-b border-gray-200 pb-2">
-                                        <img src={item.image} alt={item.name} className="w-12 h-12 rounded" />
+                                {cart.map((product, index) => (
+                                    <div key={index} className="flex justify-between  border-b border-gray-200 pb-2">
+                                        <img src={`http://localhost:4000/${product.images?.[0]}`} alt="" className="w-12 h-12 rounded" />
                                         <div className="flex-1 ml-3">
-                                            <h3 className="text-sm text-gray-700 mb-2">{item.name}</h3>
-                                            <p className="text-sm text-gray-700 font-bold mb-2">${(item.price * item.quantity).toFixed(2)}</p>
+                                            <h3 className="text-sm text-gray-700 mb-2">{product.name}</h3>
+                                            <p className="text-sm text-gray-700 font-bold mb-2">${(product.price * product.quantity).toFixed(2)}</p>
 
                                             <div className="flex justify-between items-center">
                                                 <div className="flex items-center text-gray-700">
                                                     <div className="flex items-center justify-center gap-4 w-25 border border-gray-200 rounded px-2 py-1">
-                                                        <button className="cursor-pointer" onClick={() =>item.quantity > 1 && updateCartQuantity(item.id, item.quantity - 1)}>-</button>
-                                                        <span className="text-sm">{item.quantity}</span>
-                                                        <button className="cursor-pointer" onClick={() => updateCartQuantity(item.id, item.quantity + 1)}>+</button>
+
+                                                        <button className="cursor-pointer"
+                                                         onClick={() =>product.quantity > 1 && updateCartQuantity(product, product.quantity - 1)}>-</button>
+
+                                                        <span className="text-sm">{product.quantity}</span>
+
+                                                        <button className="cursor-pointer" onClick={() => updateCartQuantity(product, product.quantity + 1)}>+</button>
+
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <button className="text-red-500 text-sm cursor-pointer" onClick={() => handleRemove(item.id, item.quantity)}>
+                                                    <button className="text-red-500 text-sm cursor-pointer" onClick={() => handleRemove(product)}>
                                                         <CiSquareRemove className="text-2xl" />
                                                     </button>
                                                 </div>

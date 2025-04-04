@@ -1,5 +1,4 @@
 const Wishlist = require("../models/Wishlist");
-const Product = require("../models/product");
 const logger = require("../Logger/logger");
 
 // Add product to wishlist

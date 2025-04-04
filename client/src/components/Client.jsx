@@ -30,10 +30,7 @@ function Client() {
     // Fetch Product
     const fetchClients = async () => {
         try {
-            const token = localStorage.getItem("token");
-            const res = await axios.get("http://localhost:4000/api/client/list", {
-                headers: { Authorization: `Bearer ${token}` },
-            });
+            const res = await axios.get("http://localhost:4000/api/client/list");
             if (res.data.success) {
                 setClients(res.data.client);
             }

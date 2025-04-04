@@ -21,6 +21,7 @@ function Profile() {
         setIsLoggedIn(false);
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('token')
+        localStorage.removeItem('wishlist')
         navigate('/', { replace: true });
     };
 
